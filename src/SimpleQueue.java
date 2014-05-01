@@ -112,10 +112,8 @@ public class SimpleQueue<E> implements Queue<E> {
     
     @Override
     public E remove() {
-        E temp = this.storage[this.head];
-        if (this.head == this.size()-1) {
-            
-        }
+        
+             
         
         return temp;
     }
@@ -167,27 +165,40 @@ public class SimpleQueue<E> implements Queue<E> {
     @Override
     public Object[] toArray() {
         int i = 0;
-        E[] tempStorage =  (E[]) new Object[this.size()*2];  // cast to E      
+        E[] tempStorage =  (E[]) new Object[storage.length];  // cast to E      
         
         // counter variable i
         // first while loop iterates until head runs off the right edge of the array
         // it reorders the new tempStorage array with the first value at tempStorage[0]
         // up to tempStorage[i]. 
-        while (this.head < this.size()) {
-            tempStorage[i] = this.storage[this.head];
+        while (this.head < storage.length) {
+            tempStorage[i] = storage[this.head];
             this.head++; i++; // increment counters
         }
         
-        // second while loop continues from the beginning of storage if the array is
-        // abnormal - say the head is greater than the tail
-        if (i != this.size()-1) {
-            this.head = 0;
-            while (this.head < this.tail) {
-                tempStorage[i] = this.storage[this.head];
-                this.head++; i++; // increment counters
-            }
+        // set head back to storage[0]
+        this.head = 0;
+        
+        // begin 2nd while loop which finishes from the beginning of storage
+        // if storage is abnormal and has a tail greater than head.
+        // in a normal array with head = 0 this loop won't run because i will already
+        // be greater than tempStorage.length
+        while (i < tempStorage.length) {
+            tempStorage[i] = storage[this.head];
+        this.head++; i++;
         }
-        this.tail = this.size()-1; // resets the tail to be at the last element in the new array
+        
+        // where does the tail go? 
+        for (i=0; i < tempStorage.length; i++) {
+            if (tempStorage[i] == null) {
+                this.tail = i-1;
+                break;
+            }
+            else {
+                this.tail = tempStorage.length-1;
+            }
+            
+        }
         this.head = 0; // resets the head to = 0
         return tempStorage; // returns tempStorage which has null space at the end
     }
