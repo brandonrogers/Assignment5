@@ -1,6 +1,6 @@
 
 /**
- * Brandon Rogers Assignment 5: Queues Due 7 May 2014
+ * Brandon Rogers
  *
  * @author brandonrogers
  */
